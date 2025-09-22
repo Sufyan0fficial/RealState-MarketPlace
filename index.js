@@ -4,7 +4,13 @@ const dotenv = require("dotenv");
 const DBConnection = require("./db/connect");
 dotenv.config();
 const connectionString = process.env.MONGODB_CONNECTION_STR;
+const UserAuth = require('./Routes/auth');
+const ErrorHandler = require("./Middlewares/errorHandler");
 
+app.use(express.json())
+
+app.use('/api/v1',UserAuth)
+app.use(ErrorHandler)
 
 
 
