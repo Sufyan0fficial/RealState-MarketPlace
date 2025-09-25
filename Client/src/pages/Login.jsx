@@ -4,16 +4,20 @@ import { Button, Form, Input, message, Spin } from "antd";
 import { LoginAPI, RegisterAPI } from "../api/auth.api";
 import { useState } from "react";
 import { alert } from "../utils/helper.utils";
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../Redux/userSlice';
 
 function Login() {
   const [loading, setLoading] = useState(false)
   const [messageApi, contextHolder] = message.useMessage();
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const handleUserLogin = async(data) => {
     try {
       setLoading(true)
       const res = await LoginAPI(data)
       if(res.status === 200){
+        dispatch(loginSuccess(res.data.data))
         alert(messageApi,'success','User Logged In, Successfully')
         setTimeout(() => {
           
