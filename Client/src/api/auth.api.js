@@ -23,6 +23,9 @@ axiosInstance.interceptors.response.use(
 
 
     export const RegisterAPI = async (payload)=>{
-        return  axiosInstance.post('/auth/signup',payload)
+        return await axiosInstance.post('/auth/signup',payload)
+    }
 
+    export const LoginAPI = async (payload)=>{
+      return await axiosInstance.post('/auth/signin',payload,{withCredentials:true})
     }

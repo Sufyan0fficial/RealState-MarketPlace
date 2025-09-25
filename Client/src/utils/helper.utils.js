@@ -1,4 +1,4 @@
-export const success = (messageApi,type,content) => {
+export const alert = (messageApi,type,content) => {
     messageApi.open({
       type: type,
       content: content,

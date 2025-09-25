@@ -3,10 +3,12 @@ const User = require("../Models/user.model");
 const bcrypt = require("bcryptjs");
 const customErrorHandler = require("../utils/error");
 const jwt = require('jsonwebtoken')
+const dotenv = require('dotenv')
+dotenv.config()
 
 const Register = asyncWrapper(async (req, res, next) => {
   const { name, email, password } = req.body;
-  const hasshedPassword = bcrypt.hashSync(password);
+  const hasshedPassword = bcrypt.hashSync(password,10);
   const validateEmail =  await User.findOne({email})
   console.log('validate email is',validateEmail)
   if(validateEmail){
@@ -23,16 +25,20 @@ const Register = asyncWrapper(async (req, res, next) => {
 const Login = asyncWrapper(
   async (req,res,next)=>{
   const {email, password} = req.body
+  console.log('recieving password is',password)
   const validateUser = await User.findOne({email})
-  const validatePassword = bcrypt.compareSync(password,validateUser.password)
+  console.log('user is ',validateUser)
   if(!validateUser){
-    return next(customErrorHandler(404,'User not found !'))
+    return next(customErrorHandler(404,'User not found ! Pleae check your email address'))
   }
+  const validatePassword = bcrypt.compareSync(password,validateUser.password)
+  console.log('password validation',validatePassword)
   if(!validatePassword){
-    return next(customErrorHandler(400,"Invalid Credentials"))
+    return next(customErrorHandler(400,"Invalid Credentials ! Please check your password"))
   }
-  const token = jwt.sign({id:validateUser._id})
-  const {password:pass, ...rest} = validateUser
+  const token = jwt.sign({id:validateUser._id},process.env.COOKIE_STR)
+  console.log('token is',token)
+  const {password:pass, ...rest} = validateUser._doc
   return res
     .cookie("access_token", token, { httpOnly: true })
     .status(200)

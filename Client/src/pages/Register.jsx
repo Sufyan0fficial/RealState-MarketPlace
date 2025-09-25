@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, message, Spin } from "antd";
 import { RegisterAPI } from "../api/auth.api";
 import { useState } from "react";
-import { success } from "../utils/helper.utils";
+import { alert } from "../utils/helper.utils";
 
 function Register() {
   const [loading, setLoading] = useState(false)
@@ -23,13 +23,17 @@ function Register() {
       const response = await RegisterAPI(values)
       console.log('api response is', response)
       if (response.status === 200) {
-        success(messageApi, 'success', "User has been successfully registered")
+        alert(messageApi, 'success', "User has been successfully registered")
+        setTimeout(() => {
+          
+          navigate('/login')
+        }, 1000);
       }
 
     } catch (error) {
       console.log('error is',error)
       setLoading(false)
-      success(messageApi,"error",(error.response.data.message || "Something went wrong"))
+      alert(messageApi,"error",(error.response.data.message || "Something went wrong"))
     }
     finally {
       setLoading(false)
