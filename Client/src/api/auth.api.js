@@ -29,3 +29,8 @@ axiosInstance.interceptors.response.use(
     export const LoginAPI = async (payload)=>{
       return await axiosInstance.post('/auth/signin',payload,{withCredentials:true})
     }
+    export const GoogleAuthApi = async (payload)=>{
+      return await axiosInstance.post('/auth/google',payload,{withCredentials:true})
+    }
+
+    

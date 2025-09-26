@@ -4,6 +4,7 @@ import { Button, Form, Input, message, Spin } from "antd";
 import { RegisterAPI } from "../api/auth.api";
 import { useState } from "react";
 import { alert } from "../utils/helper.utils";
+import OAuth from "../components/OAuth";
 
 function Register() {
   const [loading, setLoading] = useState(false)
@@ -92,9 +93,7 @@ function Register() {
 
 
       </Form>
-      <div className="w-full max-w-[450px] rounded-md bg-red-700 py-[10px] px-4 text-white text-center uppercase cursor-pointer">
-        Continue with Google
-      </div>
+      <OAuth />
       <div className="w-full max-w-[450px] flex justify-start items-center gap-2">
         <span>Have an account?</span>
         <span

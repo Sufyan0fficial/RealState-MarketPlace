@@ -36,7 +36,7 @@ const Login = asyncWrapper(
   if(!validatePassword){
     return next(customErrorHandler(400,"Invalid Credentials ! Please check your password"))
   }
-  const token = jwt.sign({id:validateUser._id},process.env.COOKIE_STR)
+  const token = jwt.sign({id:validateUser._id},process.env.JWT_SECRET_TOKEN)
   console.log('token is',token)
   const {password:pass, ...rest} = validateUser._doc
   return res
@@ -46,7 +46,28 @@ const Login = asyncWrapper(
 
 })
 
+
+const GoogleAuth = asyncWrapper(async (req,res,next)=>{
+  const {name, email, photo } = req.body
+  const validateUser = await User.findOne({email})
+  if(validateUser){
+    console.log('validated User is',validateUser)
+    const token = jwt.sign({id:validateUser._id},process.env.JWT_SECRET_TOKEN)
+    const {password, ...rest} = validateUser._doc
+    return res.cookie('access_token',token,{httpOnly:true}).json({data:rest})
+  }
+  else{
+    const password = Math.random().toString(36).slice(-8)
+    const hashedPassword = bcrypt.hashSync(password,10)
+    const newUser = await User.create({name,email,password:hashedPassword,photo})
+    const token = jwt.sign({id:newUser._id},process.env.JWT_SECRET_TOKEN)
+    const {password:pass, ...rest} = newUser._doc
+    return res.cookie('access_token',token,{httpOnly:true}).json({data:rest})
+  }
+})
+
 module.exports = {
   Register,
-  Login
+  Login,
+  GoogleAuth
 };

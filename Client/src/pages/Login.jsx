@@ -6,6 +6,7 @@ import { useState } from "react";
 import { alert } from "../utils/helper.utils";
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../Redux/userSlice';
+import OAuth from '../components/OAuth';
 
 function Login() {
   const [loading, setLoading] = useState(false)
@@ -77,6 +78,7 @@ function Login() {
 
 
       </Form>
+      <OAuth />
       {/* <div className="w-full max-w-[450px] rounded-md bg-red-700 py-[10px] px-4 text-white text-center uppercase cursor-pointer">
         Continue with Google
       </div> */}
