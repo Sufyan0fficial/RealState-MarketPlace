@@ -10,31 +10,44 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response.message) {
-      console.err(err.response.message);
-    } else if (!err.response.message) {
+    if (err.response) {
+      console.log("if error response got", err.response);
+    } else if (!err.response) {
       console.log("Please check your interenet connection");
     } else {
       console.log("Something went wrong");
     }
-    return Promise.reject(err);
+
+    if (err.response.status == 401) {
+
+      console.log("ready to get navigate to authentication route");
+      window.location.href = "/login";
+    }
+    return Promise.reject(err.response?.data);
   }
 );
 
+export const RegisterAPI = async (payload) => {
+  return await axiosInstance.post("/auth/signup", payload);
+};
 
-    export const RegisterAPI = async (payload)=>{
-        return await axiosInstance.post('/auth/signup',payload)
-    }
+export const LoginAPI = async (payload) => {
+  return await axiosInstance.post("/auth/signin", payload, {
+    withCredentials: true,
+  });
+};
+export const GoogleAuthApi = async (payload) => {
+  return await axiosInstance.post("/auth/google", payload, {
+    withCredentials: true,
+  });
+};
 
-    export const LoginAPI = async (payload)=>{
-      return await axiosInstance.post('/auth/signin',payload,{withCredentials:true})
-    }
-    export const GoogleAuthApi = async (payload)=>{
-      return await axiosInstance.post('/auth/google',payload,{withCredentials:true})
-    }
+export const UpdateUser = async (payload, id) => {
+  return await axiosInstance.patch(`/user/update/${id}`, payload, {
+    withCredentials: true,
+  });
+};
 
-    export const UpdateUser = async(payload,id)=>{
-      return await axiosInstance.patch(`/user/update/${id}`,payload,{withCredentials:true})
-    }
-
-    
+export const deleteUser = async(id)=>{
+  return await axiosInstance.delete(`/user/delete/${id}`,{withCredentials:true})
+}

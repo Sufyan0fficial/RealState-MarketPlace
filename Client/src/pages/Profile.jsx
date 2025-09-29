@@ -3,11 +3,12 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Navigate } from 'react-router-dom'
-import { UpdateUser } from '../api/auth.api'
+import { deleteUser, UpdateUser } from '../api/auth.api'
 import { Button, Form, Input, message, Spin } from 'antd'
 import { alert } from '../utils/helper.utils'
 import { useState } from 'react'
 import { loginSuccess } from '../Redux/userSlice'
+// import { deleteUser } from 'firebase/auth'
 
 function Profile() {
   const navigate = useNavigate()
@@ -32,8 +33,21 @@ function Profile() {
         }, 1000);
       }
     } catch (error) {
-      alert(messageApi, 'error', (error.response.data.message || "Something went wrong"))
+      console.log('error while updating profile', error)
       setLoading(false)
+      alert(messageApi, 'error', (error.message || "Something went wrong"))
+    }
+  }
+
+  const handleDeleteAccount = async ()=>{
+    try {
+      await deleteUser(user._id)
+      alert(messageApi,'success','User Account Deleted Successfully')
+      setTimeout(() => {
+        navigate('/register')
+      }, 700);
+    } catch (error) {
+      alert(messageApi,'error',(error.message || "Something went wrong"))
     }
   }
 
@@ -86,6 +100,10 @@ return (
 
 
       </Form>
+        <div className='w-full flex justify-between items-center mt-2 max-w-[450px]' >
+          <button className='text-red-700 cursor-pointer ' onClick={handleDeleteAccount}>Delete Account</button>
+          <button className='text-red-700 cursor-pointer'>Sign Out</button>
+        </div>
     </div> :
     <Navigate to={'/login'} />
 

@@ -19,4 +19,17 @@ const updatedUser = asyncWrapper(async (req,res,next)=>{
     res.status(200).json({message:'Profile Updated successfully',data:rest})
 })
 
-module.exports = updatedUser
+const deleteUser = asyncWrapper(async (req,res,next)=>{
+    const validUser = req.user.id == req.params.id
+    if(!validUser){
+        return next(customErrorHandler(403,'Unauthorized user is trying to delete account'))
+    }
+    await User.findOneAndDelete({_id:req.params.id})
+    res.clearCookie('access_token')
+    return res.status(200).json({message:'User successfully deleted'}) 
+})
+
+module.exports = {
+    updatedUser,
+    deleteUser
+}
