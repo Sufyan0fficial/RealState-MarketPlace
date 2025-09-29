@@ -33,4 +33,8 @@ axiosInstance.interceptors.response.use(
       return await axiosInstance.post('/auth/google',payload,{withCredentials:true})
     }
 
+    export const UpdateUser = async(payload,id)=>{
+      return await axiosInstance.patch(`/user/update/${id}`,payload,{withCredentials:true})
+    }
+
     

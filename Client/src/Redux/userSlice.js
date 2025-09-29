@@ -9,6 +9,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state,action) => {
+        console.log('new paylaod coming is',action.payload)
         state.userData = action.payload
     },
     

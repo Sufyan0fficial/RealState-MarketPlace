@@ -4,9 +4,12 @@ import { app } from '../firebase/firebase'
 import { GoogleAuthApi } from '../api/auth.api'
 import { alert } from '../utils/helper.utils'
 import { message } from 'antd'
+import { useDispatch } from 'react-redux'
+import { loginSuccess } from '../Redux/userSlice'
 
 function OAuth() {
     const [messageApi, contextHolder] = message.useMessage();
+    const dispatch = useDispatch()
 
     const handleGoogleOAuth = async () => {
         const provider = new GoogleAuthProvider()
@@ -18,6 +21,7 @@ function OAuth() {
             try {
                 const res = await GoogleAuthApi({ name:name, email:email, photo:photo })
                 if (res.status === 200) {
+                    dispatch(loginSuccess(res.data.data))
                     alert(messageApi, 'success', 'User Authenticated Successfully')
                     console.log('google auth response is', res)
                     setTimeout(() => {

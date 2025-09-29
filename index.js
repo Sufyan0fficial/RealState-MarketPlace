@@ -6,15 +6,19 @@ dotenv.config();
 const connectionString = process.env.MONGODB_CONNECTION_STR;
 const UserAuth = require('./Routes/auth');
 const ErrorHandler = require("./Middlewares/errorHandler");
-const cors = require('cors')
+const cors = require('cors');
+const cookieParser = require("cookie-parser");
+const User = require('./Routes/user')
 
 app.use(cors({
   origin:'http://localhost:5173',
   credentials:true
 }))
 app.use(express.json())
+app.use(cookieParser())
 
 app.use('/api/auth',UserAuth)
+app.use('/api/user',User)
 app.use(ErrorHandler)
 
 
