@@ -9,6 +9,9 @@ const ErrorHandler = require("./Middlewares/errorHandler");
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const User = require('./Routes/user')
+const Listing = require('./Routes/listing')
+const path = require('path')
+
 
 app.use(cors({
   origin:'http://localhost:5173',
@@ -19,7 +22,10 @@ app.use(cookieParser())
 
 app.use('/api/auth',UserAuth)
 app.use('/api/user',User)
+app.use('/api/listing',Listing)
 app.use(ErrorHandler)
+
+
 
 
 

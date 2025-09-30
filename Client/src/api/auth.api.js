@@ -51,3 +51,12 @@ export const UpdateUser = async (payload, id) => {
 export const deleteUser = async(id)=>{
   return await axiosInstance.delete(`/user/delete/${id}`,{withCredentials:true})
 }
+
+export const userSignout = async()=>{
+  return await axiosInstance.get('/auth/signout')
+}
+
+export const createListingApi = async (payload)=>{
+  return await axiosInstance.post('/listing/create',payload,{withCredentials:true,headers:{'Content-Type':'multipart/form-data'}}
+  )
+}

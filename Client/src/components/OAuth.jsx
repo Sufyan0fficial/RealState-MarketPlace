@@ -30,7 +30,7 @@ function OAuth() {
                 }
             } catch (error) {
                 console.log('error is', error)
-                alert(messageApi, 'error', (error.response.data.message || "Something went wrong"))
+                alert(messageApi, 'error', (error.message || "Something went wrong"))
             }
         }
 

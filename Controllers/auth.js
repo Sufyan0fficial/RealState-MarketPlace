@@ -66,8 +66,14 @@ const GoogleAuth = asyncWrapper(async (req,res,next)=>{
   }
 })
 
+  const signOUt = asyncWrapper(async(req,res,next)=>{
+  res.clearCookie('access_token')
+  return res.status(200).json({message:'User Signout successfully'})
+})
+
 module.exports = {
   Register,
   Login,
-  GoogleAuth
+  GoogleAuth,
+  signOUt
 };

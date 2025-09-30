@@ -22,7 +22,7 @@ function Header() {
                     {
                         data?._id ?
                         <div className='w-10 h-10 rounded-full overflow-hidden cursor-pointer flex justify-center items-end' onClick={() => navigate('/profile')}>
-                            <img src="https://lh3.googleusercontent.com/a/ACg8ocJwAtT9UnX9V_nP6CuAoDclTgzKnlzveVYHujXwyuzCpK7LQA0=s96-c"
+                            <img src={data?.photo}
                                 alt="profile_img" className=''/>
                                 </div> :
 

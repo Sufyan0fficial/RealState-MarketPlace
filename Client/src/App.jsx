@@ -9,6 +9,8 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Profile from './pages/Profile'
 import Layout from './components/Layout'
+import PrivateRoute from './components/PrivateRoute'
+import CreateListing from './pages/CreateListing'
 
 function App() {
 
@@ -21,7 +23,10 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/home' element={<Home />} />
         <Route path='/about' element={<About />} />
+        <Route element={<PrivateRoute />}>
         <Route path='/profile' element={<Profile />} />
+        <Route path='/create-listing' element={<CreateListing />} />
+        </Route>
         </Route>
       </Routes>
     </BrowserRouter>

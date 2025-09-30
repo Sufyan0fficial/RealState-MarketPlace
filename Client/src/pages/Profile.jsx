@@ -1,9 +1,9 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Navigate } from 'react-router-dom'
-import { deleteUser, UpdateUser } from '../api/auth.api'
+import { deleteUser, UpdateUser, userSignout } from '../api/auth.api'
 import { Button, Form, Input, message, Spin } from 'antd'
 import { alert } from '../utils/helper.utils'
 import { useState } from 'react'
@@ -25,10 +25,10 @@ function Profile() {
         setLoading(false)
         dispatch(loginSuccess(res.data.data))
         alert(messageApi, 'success', 'Profile Updated Successfully')
-        
-        
+
+
         setTimeout(() => {
-          
+
           navigate('/home')
         }, 1000);
       }
@@ -39,76 +39,93 @@ function Profile() {
     }
   }
 
-  const handleDeleteAccount = async ()=>{
+  const handleDeleteAccount = async () => {
     try {
       await deleteUser(user._id)
-      alert(messageApi,'success','User Account Deleted Successfully')
+      alert(messageApi, 'success', 'User Account Deleted Successfully')
       setTimeout(() => {
+        dispatch(loginSuccess(null))
         navigate('/register')
       }, 700);
     } catch (error) {
-      alert(messageApi,'error',(error.message || "Something went wrong"))
+      alert(messageApi, 'error', (error.message || "Something went wrong"))
+    }
+  }
+
+
+  const handleUserSignout = async () => {
+    try {
+      const res = await userSignout()
+      console.log('signout response is', res)
+      if (res.status === 200) {
+        alert(messageApi, 'success', 'User Signout Successfully')
+        setTimeout(() => {
+          dispatch(loginSuccess(null))
+        }, 700);
+      }
+    } catch (error) {
     }
   }
 
 
 
-return (
-  
+  return (
 
-  user?._id ?
-    <div className='mt-10 flex flex-col items-center'>
-      {contextHolder}
-      <div className='text-3xl font-semibold text-center'>Profile</div>
-      <div className='w-full flex justify-center my-6'>
-        <div className='w-[100px] h-[100px] rounded-full overflow-hidden border border-gray-300 flex justify-center items-center'>
-          <img src={user?.photo} alt="profile_img" className='self-center' />
+
+      <div className='mt-10 flex flex-col items-center'>
+        {contextHolder}
+        <div className='text-3xl font-semibold text-center'>Profile</div>
+        <div className='w-full flex justify-center my-6'>
+          <div className='w-[100px] h-[100px] rounded-full overflow-hidden border border-gray-300 flex justify-center items-center'>
+            <img src={user?.photo} alt="profile_img" className='self-center' />
+          </div>
+
+
         </div>
-
-
-      </div>
-      <Form
-        name="Edit Profile Form"
-        initialValues={{ name: user?.name, email: user?.email }}
-        onFinish={handleEditProfile}
-        className='w-full !max-w-[450px] mx-auto'
-      >
-        <Form.Item
-          name="name"
-          rules={[{ required: true, message: "UserName is required", }]}
+        <Form
+          name="Edit Profile Form"
+          initialValues={{ name: user?.name, email: user?.email }}
+          onFinish={handleEditProfile}
+          className='w-full !max-w-[450px] mx-auto'
         >
-          <Input placeholder="UserName" className="!py-2" />
-        </Form.Item>
-        <Form.Item
-          name="email"
-          rules={[{ required: true, message: "Email is required" }, { type: "email", message: "Please enter a valid email address" }]}
-        >
-          <Input placeholder="Email" className="!py-2" />
-        </Form.Item>
-        <Form.Item
-          name="password"
-        >
-          <Input placeholder="Password" className="!py-2" />
-        </Form.Item>
-        <Button htmlType="submit" className='w-full !bg-[#3d4a5d] !h-[40px] !rounded-md !border-0 uppercase !text-white !relative' disabled={loading} >
-          <span>UPDATE</span>
-          {
-            loading &&
-            <Spin size="small" className="[&_.ant-spin-dot]:text-white !absolute translate-x-12" />
-          }
+          <Form.Item
+            name="name"
+            rules={[{ required: true, message: "UserName is required", }]}
+          >
+            <Input placeholder="UserName" className="!py-2" />
+          </Form.Item>
+          <Form.Item
+            name="email"
+            rules={[{ required: true, message: "Email is required" }, { type: "email", message: "Please enter a valid email address" }]}
+          >
+            <Input placeholder="Email" className="!py-2" />
+          </Form.Item>
+          <Form.Item
+            name="password"
+          >
+            <Input placeholder="Password" className="!py-2" />
+          </Form.Item>
+          <Button htmlType="submit" className='w-full !bg-[#3d4a5d] !h-[40px] !rounded-md !border-0 uppercase !text-white !relative' disabled={loading} >
+            <span>UPDATE</span>
+            {
+              loading &&
+              <Spin size="small" className="[&_.ant-spin-dot]:text-white !absolute translate-x-12" />
+            }
           </Button>
 
 
-      </Form>
+        </Form>
+        <div className='w-full max-w-[450px]'>
+          <Link to='/create-listing' className='text-center h-[40px] flex justify-center items-center text-white bg-[#208646] rounded-md uppercase mt-3'>Create Listing</Link>
         <div className='w-full flex justify-between items-center mt-2 max-w-[450px]' >
           <button className='text-red-700 cursor-pointer ' onClick={handleDeleteAccount}>Delete Account</button>
-          <button className='text-red-700 cursor-pointer'>Sign Out</button>
+          <button className='text-red-700 cursor-pointer' onClick={handleUserSignout}>Sign Out</button>
         </div>
-    </div> :
-    <Navigate to={'/login'} />
+        </div>
+      </div> 
 
 
-)
+  )
 }
 
 export default Profile

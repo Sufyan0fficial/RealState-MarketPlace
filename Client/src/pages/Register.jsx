@@ -34,7 +34,7 @@ function Register() {
     } catch (error) {
       console.log('error is',error)
       setLoading(false)
-      alert(messageApi,"error",(error.response.data.message || "Something went wrong"))
+      alert(messageApi,"error",(error.message || "Something went wrong"))
     }
     finally {
       setLoading(false)
