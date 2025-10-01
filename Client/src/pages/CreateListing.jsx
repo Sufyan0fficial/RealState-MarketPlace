@@ -3,8 +3,11 @@ import { alert } from '../utils/helper.utils'
 import { message, Spin } from 'antd'
 import { set } from 'mongoose'
 import { createListingApi } from '../api/auth.api'
+import { useSelector } from 'react-redux'
 
 function CreateListing() {
+    const user = useSelector((state) => state.userSlice.userData)
+    console.log('user from redux is', user)
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState({
         name: '',
@@ -14,11 +17,12 @@ function CreateListing() {
         baths: 1,
         regPrice: 1,
         disPrice: 1,
-        type: 'rent'
+        type: 'rent',
+        userRef: user?._id || '',
     })
     const [booleanData, setBooleanData] = useState({
         sell: false,
-        rent: false,
+        rent: true,
         parking: false,
         furnished: false,
         offer: false,
@@ -29,7 +33,7 @@ function CreateListing() {
     console.log('file data is', fileData)
 
     useEffect(() => {
-        setcompleteData({ ...data, ...booleanData, images: fileData })
+        setcompleteData({ ...data, ...booleanData, images: fileData, regPrice: Number(data.regPrice), disPrice: Number(data.disPrice)})
     }, [data, booleanData, fileData])
 
 
@@ -57,6 +61,8 @@ function CreateListing() {
         formData.append('parking', completeData.parking)
         formData.append('furnished', completeData.furnished)
         formData.append('offer', completeData.offer)
+        formData.append('type', completeData.type)
+        formData.append('userRef', completeData.userRef)
         if (Array.isArray(fileData)) {
 
             fileData.forEach((file) => {
@@ -138,7 +144,7 @@ return (
                             <label htmlFor="sell" className='text-lg cursor-pointer'>Sell</label>
                         </div>
                         <div className='flex gap-2 items-center'>
-                            <input type="checkbox" defaultChecked defaultValue={true} checked={completeData.type == 'rent'} className='w-5 h-5' id='rent' name='rent' onChange={handleBooleanChange} />
+                            <input type="checkbox"  checked={completeData.type == 'rent'} className='w-5 h-5' id='rent' name='rent' onChange={handleBooleanChange} />
                             <label htmlFor="rent" className='text-lg cursor-pointer'>Rent</label>
                         </div>
                         <div className='flex gap-2 items-center'>

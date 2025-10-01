@@ -60,3 +60,21 @@ export const createListingApi = async (payload)=>{
   return await axiosInstance.post('/listing/create',payload,{withCredentials:true,headers:{'Content-Type':'multipart/form-data'}}
   )
 }
+
+
+export const getListings = async(id)=>{
+  return await axiosInstance.get(`/listing/get/${id}`,{withCredentials:true})
+}
+
+
+export const deleteListing = async (id)=>{
+  return await axiosInstance.delete(`/listing/delete/${id}`,{withCredentials:true})
+}
+export const getListing = async (id)=>{
+  return await axiosInstance.delete(`/listing/get/${id}`,{withCredentials:true})
+}
+
+export const updateListing = async(payload,id)=>{
+  return await axiosInstance.patch(`/listing/update/${id}`,payload,{withCredentials:true, headers:{'Content-Type':'multipart/form-data'}})
+}
+

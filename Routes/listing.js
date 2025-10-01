@@ -3,18 +3,21 @@ const multer = require('multer')
 const storage = require('../utils/createStorage')
 
 const uploads = multer({storage})
-// const uploadFiles =  (req,res,next)=>{
-//    uploads.array('images',6)
-//     console.log('req condition inside uploadFiles middleware',req.body,req.files,req.file)
-//   next()
-// }
 
 const {
-    CreateListing
+    CreateListing,
+    getListings,
+    deleteListing,
+    getListing,
+    updateListing
 } = require('../Controllers/listing')
 const verifyUser = require('../utils/verifyUser')
 
 router.route('/create').post(verifyUser,uploads.array('images', 6),CreateListing)
+router.route('/get/:id').get(verifyUser,getListings)
+router.route('/delete/:id').delete(verifyUser,deleteListing)
+router.route('/get/:id').delete(verifyUser,getListing)
+router.route('/update/:id').patch(verifyUser,uploads.array('images', 6),updateListing)
 
 
 module.exports = router

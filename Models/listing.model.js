@@ -52,6 +52,18 @@ const ListingSchema = new mongoose.Schema({
     images:{
         type:[String],
         required:true
+    },
+    userRef:{
+        type:String,
+        required:true
+    },
+    files:{
+        type:[Object],
+        required:true
+    },
+    type:{
+        type:String,
+        required:true
     }
 
 },{timestamps:true})
