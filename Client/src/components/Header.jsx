@@ -15,7 +15,7 @@ function Header() {
             const searchParams = new URLSearchParams(window.location.search);
             searchParams.set('searchTerm', searchTerm);
             const queryString = searchParams.toString();
-            navigate(`/home?${queryString}`)
+            navigate(`/search?${queryString}`)
         }
     }
 
