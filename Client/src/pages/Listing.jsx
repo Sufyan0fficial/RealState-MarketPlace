@@ -46,7 +46,7 @@ function Listing() {
                 <Carousel autoplay fade arrows >
                     {listingData?.images.map((image, index) => (
                         <div key={index} className='w-full h-[calc(100vh-80px)]'>
-                            <img src={`http://localhost:3000/${image}`} alt="listing_img" className='w-full h-full object-cover' />
+                            <img src={`${import.meta.env.VITE_API_BASE_URL}/${image}`} alt="listing_img" className='w-full h-full object-cover' />
                         </div>
                     ))}
                 </Carousel>

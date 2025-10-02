@@ -4,7 +4,7 @@ const {
     deleteUser,
     getUser
 } = require('../Controllers/user')
-const verifyUser = require('../utils/verifyUser')
+const {verifyUser} = require('../utils/verifyUser')
 
 
 

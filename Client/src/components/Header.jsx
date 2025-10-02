@@ -11,7 +11,7 @@ function Header() {
     const location = useLocation()
     console.log('search term is',searchTerm)
     const handleSubmit = (e) => {
-        if (e.key === 'Enter' && searchTerm) {
+        if (e.key === 'Enter') {
             const searchParams = new URLSearchParams(window.location.search);
             searchParams.set('searchTerm', searchTerm);
             const queryString = searchParams.toString();

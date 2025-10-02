@@ -9,11 +9,13 @@ const {
     getListings,
     deleteListing,
     getListing,
-    updateListing
+    updateListing,
+    filterListings
 } = require('../Controllers/listing')
-const verifyUser = require('../utils/verifyUser')
+const {verifyUser} = require('../utils/verifyUser')
 
 router.route('/create').post(verifyUser,uploads.array('images', 6),CreateListing)
+router.route('/filter').get(filterListings)
 router.route('/:id').get(verifyUser,getListings)
 router.route('/delete/:id').delete(verifyUser,deleteListing)
 router.route('/get/:id').get(getListing)

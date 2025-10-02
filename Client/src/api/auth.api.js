@@ -82,3 +82,7 @@ export const fetchLandlordUser = async (id)=>{
   return await axiosInstance.get(`/user/${id}`,{withCredentials:true})
 }
 
+export const fetchListings = async (qrString)=>{
+  return await axiosInstance.get(`/listing/filter?${qrString}`)
+}
+

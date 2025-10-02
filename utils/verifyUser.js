@@ -2,8 +2,8 @@ const customErrorHandler = require("./error")
 const jwt = require('jsonwebtoken')
 
 const verifyUser = (req,res,next)=>{
+    console.log('verifícation getting triggerd')
     const token = req.cookies.access_token
-    console.log('token is',token)
     if(!token){
         return next(customErrorHandler(401,'Unauthorized User'))
     }
@@ -18,4 +18,6 @@ const verifyUser = (req,res,next)=>{
     })
 }
 
-module.exports = verifyUser
+module.exports = {
+    verifyUser
+}
