@@ -159,7 +159,7 @@ function Profile() {
                     <div>
                       <img src={`http://localhost:3000/${listing.images[0]}`} alt="listing_img" className=' w-[60px] h-[60px]  rounded-md' />
                     </div>
-                    <div className='text-lg font-semibold max-w-28 overflow-hidden text-ellipsis whitespace-nowrap'>{listing.name}</div>
+                    <div className='text-lg font-semibold max-w-28 overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer' onClick={()=>navigate(`/listing/${listing?._id}`)}>{listing.name}</div>
                   </div>
                   <div className='flex flex-col items-center'>
                     <div className='uppercase text-red-700 cursor-pointer' onClick={() => handleDeleteListing(listing?._id)}>Delete</div>

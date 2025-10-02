@@ -44,9 +44,6 @@ const getListing = asyncWrapper(async (req,res,next)=>{
     if(!listing){
         return next(customErrorHandler(404,'Listing not found'))
     }
-    if(req.user.id !== listing.userRef){
-        return next(customErrorHandler(403,'Forbidden'))
-    }
     return res.status(200).json({success:true,data:listing})
 })
 

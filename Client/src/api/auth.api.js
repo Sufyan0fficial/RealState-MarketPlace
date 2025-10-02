@@ -18,11 +18,11 @@ axiosInstance.interceptors.response.use(
       console.log("Something went wrong");
     }
 
-    if (err.response.status == 401) {
+    // if (err.response.status == 401) {
 
-      console.log("ready to get navigate to authentication route");
-      window.location.href = "/login";
-    }
+    //   console.log("ready to get navigate to authentication route");
+    //   window.location.href = "/login";
+    // }
     return Promise.reject(err.response?.data);
   }
 );
@@ -63,7 +63,7 @@ export const createListingApi = async (payload)=>{
 
 
 export const getListings = async(id)=>{
-  return await axiosInstance.get(`/listing/get/${id}`,{withCredentials:true})
+  return await axiosInstance.get(`/listing/${id}`,{withCredentials:true})
 }
 
 
@@ -71,10 +71,14 @@ export const deleteListing = async (id)=>{
   return await axiosInstance.delete(`/listing/delete/${id}`,{withCredentials:true})
 }
 export const getListing = async (id)=>{
-  return await axiosInstance.delete(`/listing/get/${id}`,{withCredentials:true})
+  return await axiosInstance.get(`/listing/get/${id}`,{withCredentials:true})
 }
 
 export const updateListing = async(payload,id)=>{
   return await axiosInstance.patch(`/listing/update/${id}`,payload,{withCredentials:true, headers:{'Content-Type':'multipart/form-data'}})
+}
+
+export const fetchLandlordUser = async (id)=>{
+  return await axiosInstance.get(`/user/${id}`,{withCredentials:true})
 }
 

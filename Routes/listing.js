@@ -14,9 +14,9 @@ const {
 const verifyUser = require('../utils/verifyUser')
 
 router.route('/create').post(verifyUser,uploads.array('images', 6),CreateListing)
-router.route('/get/:id').get(verifyUser,getListings)
+router.route('/:id').get(verifyUser,getListings)
 router.route('/delete/:id').delete(verifyUser,deleteListing)
-router.route('/get/:id').delete(verifyUser,getListing)
+router.route('/get/:id').get(getListing)
 router.route('/update/:id').patch(verifyUser,uploads.array('images', 6),updateListing)
 
 

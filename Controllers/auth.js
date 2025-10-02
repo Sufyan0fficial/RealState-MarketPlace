@@ -51,7 +51,6 @@ const GoogleAuth = asyncWrapper(async (req,res,next)=>{
   const {name, email, photo } = req.body
   const validateUser = await User.findOne({email})
   if(validateUser){
-    console.log('validated User is',validateUser)
     const token = jwt.sign({id:validateUser._id},process.env.JWT_SECRET_TOKEN)
     const {password, ...rest} = validateUser._doc
     return res.cookie('access_token',token,{httpOnly:true}).json({data:rest})

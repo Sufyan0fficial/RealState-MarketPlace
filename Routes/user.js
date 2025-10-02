@@ -1,7 +1,8 @@
 const router = require('express').Router()
 const {
     updatedUser,
-    deleteUser
+    deleteUser,
+    getUser
 } = require('../Controllers/user')
 const verifyUser = require('../utils/verifyUser')
 
@@ -9,6 +10,7 @@ const verifyUser = require('../utils/verifyUser')
 
 router.route('/update/:id').patch(verifyUser,updatedUser)
 router.route('/delete/:id').delete(verifyUser,deleteUser)
+router.route('/:id').get(verifyUser,getUser)
 
 
 

@@ -29,7 +29,19 @@ const deleteUser = asyncWrapper(async (req,res,next)=>{
     return res.status(200).json({message:'User successfully deleted'}) 
 })
 
+const getUser = asyncWrapper(async(req,res,next)=>{
+    const user = await User.findById(req.params.id)
+    if(!user){
+        return next(customErrorHandler(404,'Landlord user not found'))
+    }
+    else
+    {
+        return res.status(200).json({success:true, data:user})
+    }
+})
+
 module.exports = {
     updatedUser,
-    deleteUser
+    deleteUser,
+    getUser
 }
