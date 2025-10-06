@@ -4,6 +4,11 @@ const User = require('../Models/user.model')
 const bcryptjs = require('bcryptjs')
 
 const updatedUser = asyncWrapper(async (req,res,next)=>{
+    console.log('incoming image is',req.file)
+    const image = req.file?.filename
+    if(image){
+        var photo = req.file?.filename
+    }
     const password = req.body?.password
     if(password){
         var hashedPassword = bcryptjs.hashSync(password,10)
@@ -13,7 +18,7 @@ const updatedUser = asyncWrapper(async (req,res,next)=>{
         return next(customErrorHandler(403,'Unauthorized User is trying to Update the Profile'))
     }
     
-    const updatedProfile = await User.findOneAndUpdate({_id:req.params.id}, {...req.body,password:hashedPassword}, {new:true,runValidators:true})
+    const updatedProfile = await User.findOneAndUpdate({_id:req.params.id}, {...req.body,password:hashedPassword,photo}, {new:true,runValidators:true})
     console.log('updated profile data is',updatedProfile)
     const {password:pass, ...rest} = updatedProfile._doc
     res.status(200).json({message:'Profile Updated successfully',data:rest})

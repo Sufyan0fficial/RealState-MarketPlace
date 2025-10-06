@@ -8,6 +8,7 @@ import { Button, Form, Input, List, message, Spin } from 'antd'
 import { alert } from '../utils/helper.utils'
 import { useState } from 'react'
 import { loginSuccess } from '../Redux/userSlice'
+import { isValidURL } from '../utils/helper.utils'
 // import { deleteUser } from 'firebase/auth'
 
 function Profile() {
@@ -17,21 +18,32 @@ function Profile() {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
   const [listings, setListings] = useState([])
+  const [profileImage, setProfileImage] = useState(null)
+  console.log('profile img status',profileImage)
+  console.log('isvalid url',isValidURL(user?.photo))
 
   const handleEditProfile = async (data) => {
+    let payload = {}
+    if(profileImage){
+      payload = {...data,photo:profileImage}
+    }
+    else{
+
+      payload = {...data}
+    }
     setLoading(true)
     try {
-      const res = await UpdateUser(data, user._id)
+      const res = await UpdateUser(payload, user._id)
       if (res.status === 200) {
         setLoading(false)
         dispatch(loginSuccess(res.data.data))
         alert(messageApi, 'success', 'Profile Updated Successfully')
 
 
-        setTimeout(() => {
+        // setTimeout(() => {
 
-          navigate('/home')
-        }, 1000);
+        //   navigate('/')
+        // }, 1000);
       }
     } catch (error) {
       console.log('error while updating profile', error)
@@ -104,9 +116,10 @@ function Profile() {
       {contextHolder}
       <div className='text-3xl font-semibold text-center'>Profile</div>
       <div className='w-full flex justify-center my-6'>
-        <div className='w-[100px] h-[100px] rounded-full overflow-hidden border border-gray-300 flex justify-center items-center'>
-          <img src={user?.photo} alt="profile_img" className='self-center' />
-        </div>
+        <label htmlFor='image_upload' className='w-[100px] h-[100px] cursor-pointer rounded-full overflow-hidden border border-gray-300 flex justify-center items-center'>
+          <img src={profileImage ? URL.createObjectURL(profileImage) : isValidURL(user?.photo) ? user.photo : `${import.meta.env.VITE_API_BASE_URL}/${user.photo}`} alt="profile_img" className='self-center' />
+        </label>
+        <input type="file" accept='image/*' multiple={false} hidden id='image_upload' onChange={(e)=>setProfileImage(e.target.files[0])}/>
 
 
       </div>
