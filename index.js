@@ -18,7 +18,7 @@ const { pathToFileURL } = require("url");
 uploadsCleanup()
 
 app.use(cors({
-  origin:'http://localhost:5173',
+  origin:'https://realstate-marketplace.onrender.com/',
   credentials:true
 }))
 app.use(express.json())
