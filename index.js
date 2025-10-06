@@ -31,8 +31,9 @@ app.use('/api/auth',UserAuth)
 app.use('/api/user',User)
 app.use('/api/listing',Listing)
 app.use(ErrorHandler)
-
-
+app.get('*',(req,res)=>{
+  return res.sendFile(path.join(__dirname,'./Client/index.html'))
+})
 
 
 
