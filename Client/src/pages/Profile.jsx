@@ -170,7 +170,7 @@ function Profile() {
                 <div key={listing._id} className='w-full max-w-[450px] border border-gray-300 rounded-md p-4 mt-4 flex justify-between items-center'>
                   <div className='flex gap-2 items-center'>
                     <div>
-                      <img src={`http://localhost:3000/${listing.images[0]}`} alt="listing_img" className=' w-[60px] h-[60px]  rounded-md' />
+                      <img src={`${import.meta.env.VITE_API_BASE_URL}/${listing.images[0]}`} alt="listing_img" className=' w-[60px] h-[60px]  rounded-md' />
                     </div>
                     <div className='text-lg font-semibold max-w-28 overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer' onClick={()=>navigate(`/listing/${listing?._id}`)}>{listing.name}</div>
                   </div>
