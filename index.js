@@ -11,7 +11,8 @@ const cookieParser = require("cookie-parser");
 const User = require('./Routes/user')
 const Listing = require('./Routes/listing')
 const path = require('path')
-const uploadsCleanup = require('./utils/uploadsCleanup')
+const uploadsCleanup = require('./utils/uploadsCleanup');
+const { pathToFileURL } = require("url");
 
 
 uploadsCleanup()
@@ -23,6 +24,8 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname,'./uploads')))
+app.use(express.static(path.join(__dirname,'./Client/dist')))
+
 
 app.use('/api/auth',UserAuth)
 app.use('/api/user',User)
