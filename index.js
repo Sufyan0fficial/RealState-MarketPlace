@@ -24,19 +24,19 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname,'./uploads')))
-app.use(express.static(path.join(__dirname,'./Client/dist')))
+  app.use(express.static(path.join(__dirname,'./Client/dist')))
 
 
 app.use('/api/auth',UserAuth)
 app.use('/api/user',User)
 app.use('/api/listing',Listing)
 app.use(ErrorHandler)
-app.get('/*', (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'Client', 'dist', 'index.html'));
 });
-app.use((req,res)=>{
-  return res.status(404).send('Not found!')
-})
+// app.use((req,res)=>{
+//   return res.status(404).send('Not found!')
+// })
 
 
 

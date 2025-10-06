@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Register from './pages/Register'
 import Login from './pages/Login'
 import Home from './pages/Home'
@@ -14,6 +14,7 @@ import CreateListing from './pages/CreateListing'
 import UpdateListing from './pages/UpdateListing'
 import Listing from './pages/Listing'
 import Search from './pages/Search'
+import NotFound from './pages/NotFound'
 
 function App() {
 
@@ -34,6 +35,8 @@ function App() {
         <Route path='/create-listing' element={<CreateListing />} />
         <Route path='/edit-listing/:listingId' element={<UpdateListing />} />
         </Route>
+        <Route path="/404" element={<NotFound />}/>
+        <Route path="*" element={<Navigate replace to="/404" />} />
         </Route>
       </Routes>
     </BrowserRouter>
