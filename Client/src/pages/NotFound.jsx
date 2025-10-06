@@ -5,7 +5,7 @@ const NotFound = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-gray-800 px-6">
       {/* 404 Number */}
-      <h1 className="text-[7rem] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-400 select-none">
+      <h1 className="text-[7rem] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-slate-600 select-none">
         404
       </h1>
 
@@ -23,7 +23,7 @@ const NotFound = () => {
       {/* Go Home Button */}
       <Link
         to="/"
-        className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md font-medium transition-colors duration-200"
+        className="inline-flex items-center justify-center bg-red-400 hover:bg-red-600 text-white px-6 py-3 rounded-md font-medium transition-colors duration-200"
       >
         Go Back Home
       </Link>

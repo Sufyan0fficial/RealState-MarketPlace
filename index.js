@@ -32,6 +32,15 @@ app.use('/api/user',User)
 app.use('/api/listing',Listing)
 app.use(ErrorHandler)
 app.use((req, res) => {
+  // If it's an API route that wasn't handled, return JSON 404
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ 
+      success: false,
+      message: 'API endpoint not found' 
+    });
+  }
+  
+  // For all non-API routes, serve the React app
   res.sendFile(path.join(__dirname, 'Client', 'dist', 'index.html'));
 });
 // app.use((req,res)=>{
