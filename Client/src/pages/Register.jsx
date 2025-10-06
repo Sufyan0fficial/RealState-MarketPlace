@@ -5,10 +5,12 @@ import { RegisterAPI } from "../api/auth.api";
 import { useState } from "react";
 import { alert } from "../utils/helper.utils";
 import OAuth from "../components/OAuth";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 function Register() {
   const [loading, setLoading] = useState(false)
   const [messageApi, contextHolder] = message.useMessage();
+  const [passwordHide, setPasswordHide] = useState(false)
   // const success = () => {
   //   messageApi.open({
   //     type: 'success',
@@ -70,7 +72,26 @@ function Register() {
           name="password"
           rules={[{ required: true, message: "Please Input password" }]}
         >
-          <Input placeholder="Password" className="!py-2" />
+          <div className="relative">
+                      <Input
+                        placeholder="Password"
+                        type={passwordHide ? "password" : "text"}
+                        className="!py-2 pr-10" // extra padding so text doesn't overlap icons
+                      />
+                      {passwordHide ? (
+                        <FaRegEye
+                          className="absolute top-3 right-3 cursor-pointer"
+                          fontSize="large"
+                          onClick={() => setPasswordHide((pre) => !pre)}
+                        />
+                      ) : (
+                        <FaRegEyeSlash
+                          className="absolute top-3 right-3 cursor-pointer"
+                          fontSize="large"
+                          onClick={() => setPasswordHide((pre) => !pre)}
+                        />
+                      )}
+                    </div>
         </Form.Item>
         {/* <div className="w-full max-w-[450px] rounded-md bg-gray-700 !py-[7px] px-4 text-center cursor-pointer flex justify-center items-center border"> */}
         <Button

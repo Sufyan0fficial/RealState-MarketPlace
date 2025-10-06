@@ -7,27 +7,30 @@ import { alert } from "../utils/helper.utils";
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../Redux/userSlice';
 import OAuth from '../components/OAuth';
+import { FaEye, FaEyeSlash, FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 
 function Login() {
   const [loading, setLoading] = useState(false)
   const [messageApi, contextHolder] = message.useMessage();
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const handleUserLogin = async(data) => {
+  const [passwordHide, setPasswordHide] = useState(false)
+  console.log('password hide is', passwordHide)
+  const handleUserLogin = async (data) => {
     try {
       setLoading(true)
       const res = await LoginAPI(data)
-      if(res.status === 200){
+      if (res.status === 200) {
         dispatch(loginSuccess(res.data.data))
-        alert(messageApi,'success','User Logged In, Successfully')
+        alert(messageApi, 'success', 'User Logged In, Successfully')
         setTimeout(() => {
-          
-          navigate('/home')
+
+          navigate('/')
         }, 700);
       }
     } catch (error) {
       setLoading(false)
-       alert(messageApi,'error',(error.message || "Something went wrong"))
+      alert(messageApi, 'error', (error.message || "Something went wrong"))
     }
     finally {
       setLoading(false)
@@ -55,25 +58,46 @@ function Login() {
           name="password"
           rules={[{ required: true, message: "Please Input password" }]}
         >
-          <Input placeholder="Password" className="!py-2" />
-        </Form.Item>
-        {/* <div className="w-full max-w-[450px] rounded-md bg-gray-700 !py-[7px] px-4 text-center cursor-pointer flex justify-center items-center border"> */}
-        <Button
-          htmlType="submit"
-          className="!w-full !h-11 !bg-gray-700 !text-white !relative"
-          disabled={loading}
-        >
-          <span>
-            SIGN IN
-          </span>
+          <div className="relative">
+            <Input
+              placeholder="Password"
+              type={passwordHide ? "password" : "text"}
+              className="!py-2 pr-10" // extra padding so text doesn't overlap icons
+            />
+            {passwordHide ? (
+              <FaRegEye
+                className="absolute top-3 right-3 cursor-pointer"
+                fontSize="large"
+                onClick={() => setPasswordHide((pre) => !pre)}
+              />
+            ) : (
+              <FaRegEyeSlash
+                className="absolute top-3 right-3 cursor-pointer"
+                fontSize="large"
+                onClick={() => setPasswordHide((pre) => !pre)}
+              />
+            )}
+          </div>
+                  </Form.Item>
 
-          {
-            loading &&
-            <Spin size="small" className="[&_.ant-spin-dot]:text-white !absolute translate-x-12" />
-          }
-        </Button>
+          
+          {/* <div className="w-full max-w-[450px] rounded-md bg-gray-700 !py-[7px] px-4 text-center cursor-pointer flex justify-center items-center border"> */}
+          <Button
+            htmlType="submit"
+            className="!w-full !h-11 !bg-gray-700 !text-white !relative"
+            disabled={loading}
+          >
+            <span>
+              SIGN IN
+            </span>
 
-        {/* </div> */}
+            {
+              loading &&
+              <Spin size="small" className="[&_.ant-spin-dot]:text-white !absolute translate-x-12" />
+            }
+          </Button>
+
+          {/* </div> */}
 
 
 
