@@ -4,8 +4,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { fetchListings } from '../api/auth.api'
 import { alert } from '../utils/helper.utils'
-import { message } from 'antd'
-import { FaMapMarkerAlt } from 'react-icons/fa'
+import { message, Spin } from 'antd'
+import Card from '../components/Card'
 
 function Search() {
     const [filters, setFilter] = useState({
@@ -17,11 +17,13 @@ function Search() {
         sort: 'createdAt',
         order: 'desc'
     })
+    const [showMore, setShowMore] = useState(false)
     const navigate = useNavigate()
     console.log('filtes are', filters)
     const [messageApi, contextHolder] = message.useMessage()
     const [listings, setListings] = useState([])
     console.log('listings are', listings)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         console.log('rerendered')
@@ -46,9 +48,18 @@ function Search() {
                 const res = await fetchListings(queryString)
                 if (res.status == 200) {
                     setListings(res.data.data)
+                    if (res.data.data?.length > 8) {
+                        setShowMore(true)
+                    }
+                    else{
+                        setShowMore(false)
+                    }
                 }
             } catch (error) {
                 alert(messageApi, 'error', 'Something Went Wrong')
+            }
+            finally {
+                setLoading(false)
             }
         }
         getAllListings()
@@ -89,10 +100,25 @@ function Search() {
         navigate(`/search?${queryString}`)
     }
 
+    const handleShowMoreListings = async () => {
+        const startIndex = listings?.length
+        const searchParams = new URLSearchParams(location.search)
+        searchParams.set('startIndex', startIndex)
+        const queryString = searchParams.toString()
+        const res = await fetchListings(queryString)
+        if (res.status === 200) {
+            if (res.data.data?.length < 9) {
+                setShowMore(false)
+            }
+            setListings(pre => ([...pre, ...res.data.data]))
+        }
+    }
+
+
     return (
         <div className='w-full flex flex-col lg:flex-row gap-10'>
             {contextHolder}
-            <div className='w-full lg:w-[30%] flex flex-col gap-y-10 border-r border-gray-400 px-4 shrink-0'>
+            <div className='w-full lg:w-[30%] flex flex-col gap-y-10 border-r border-gray-200 px-4 shrink-0'>
                 <div className='flex gap-2 items-center mt-6'>
                     <span className='shrink-0'>Search Term :</span>
                     <input type="text" id='searchTerm' placeholder='Search...' value={filters.searchTerm} onChange={handleChange} className='focus:outline-0 bg-white w-full border border-gray-400 rounded-md px-4 py-2 text-black' />
@@ -163,41 +189,33 @@ function Search() {
                     Search
                 </div>
             </div>
-            <div className='w-full lg:w-[70%] flex flex-wrap items-stretch gap-4 mt-6'>
-
+            <div className='w-full lg:w-[70%] mt-6'>
+                <div className='font-bold text-3xl text-slate-600'>Show Listings : </div>
+                <div className='w-full h-[1px] bg-gray-200 mt-4'></div>
                 {
-                    listings?.length > 0 && listings.map((item) => {
-                        return (
-                            <div className='w-full sm:w-[47%] lg:w-[30%]  flex flex-col shadow-lg rounded-md relative '>
-                                <img src={`${import.meta.env.VITE_API_BASE_URL}/${item.images?.[0]}`} alt="listing_img" className='w-full object-cover h-56 rounded-t-md'/>
+                    loading ?
+                        <div className='bg-transparent flex justify-center min-h-[calc(100vh-150px)] relative'>
+                            <Spin size='large' className="[&_.ant-spin-dot]:text-red-600 !absolute -translate-x-1/2 translate-y-48" />
+                        </div>
+                        :
+                        <div className='w-full flex flex-wrap items-stretch gap-4 mt-10'>
 
-                                <div className='px-4 py-4 flex flex-col gap-y-2 justify-between flex-grow cursor-pointer' onClick={()=>navigate(`/listing/${item?._id}`)}>
-                                    <div className='flex flex-col gap-y-2'>
-                                <div className='font-semibold text-lg '>{item?.name}</div>
-                                <div className='flex items-start gap-2'>
-                                    <FaMapMarkerAlt color='#14532d' className='shrink-0 mt-1'/>
-                                    <div className='w-full '>
-                                    <div className='line-clamp-2 text-sm font-light'>{item?.address}</div>
-                                    </div>
-                                </div>
-                                <div className='line-clamp-2 text-sm font-light'>{item?.description}</div>
-                                </div>
-                                <div>
-                                <div className='flex items-center font-semibold text-gray-600 text-lg'>
-                                    <span>${item?.regPrice}{" "}</span>
-                                    {
-                                        item?.offer && <span>/ month</span>
-                                    }
-                                </div>
-                                <div className='flex items-center gap-6 font-semibold text-sm mt-1'>
-                                    <span>{item?.beds}{" "}{item?.beds?.length > 0 ? 'Beds' : 'Bed'}</span>
-                                    <span>{item?.baths}{" "}{item?.baths?.length > 0 ? 'Baths' : 'Baths'}</span>
-                                </div>
-                                </div>
-                                </div>
-                            </div>
-                        )
-                    })
+
+                            {
+                                listings?.length > 0 ?
+                                    listings.map((item) => {
+                                        return (
+                                            <Card item={item} />
+                                        )
+                                    }) :
+                                    <div className='text-gray-400 underline font-bold text-2xl text-center w-full mt-10'>Results not found</div>
+                            }
+
+                        </div>
+                }
+                {
+                    showMore &&
+                    <div className='text-green-600 font-semibold text-lg text-center underline mb-20 cursor-pointer mt-10' onClick={handleShowMoreListings}>Show More</div>
                 }
 
             </div>
