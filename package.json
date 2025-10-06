@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js",
-    "build":"npm install && npm install --prefix Client && npm run build --prefix Client"
+    "start": "node index.js",
+    "build": "npm install && npm install --prefix Client && npm run build --prefix Client",
+    "dev":"nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -27,7 +28,8 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.2",
-    "multer": "^2.0.2"
+    "multer": "^2.0.2",
+    "nodemon": "^3.1.10"
   },
   "devDependencies": {
     "@types/mongoose": "^5.11.96"
