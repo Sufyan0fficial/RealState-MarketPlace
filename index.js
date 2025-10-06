@@ -31,8 +31,8 @@ app.use('/api/auth',UserAuth)
 app.use('/api/user',User)
 app.use('/api/listing',Listing)
 app.use(ErrorHandler)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'Client/dist', 'index.html'));
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'Client', 'dist', 'index.html'));
 });
 app.use((req,res)=>{
   return res.status(404).send('Not found!')
