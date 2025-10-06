@@ -25,7 +25,7 @@ function OAuth() {
                     alert(messageApi, 'success', 'User Authenticated Successfully')
                     console.log('google auth response is', res)
                     setTimeout(() => {
-                        window.location.href = '/home'
+                        window.location.href = '/'
                     }, 700);
                 }
             } catch (error) {

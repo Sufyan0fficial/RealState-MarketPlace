@@ -45,6 +45,9 @@ export const GoogleAuthApi = async (payload) => {
 export const UpdateUser = async (payload, id) => {
   return await axiosInstance.patch(`/user/update/${id}`, payload, {
     withCredentials: true,
+    headers:{
+      'Content-Type':'multipart/form-data'
+    }
   });
 };
 

@@ -24,7 +24,7 @@ function App() {
         <Route element={<Layout />}>
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/home' element={<Home />} />
+        <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
         <Route path='/listing/:listingId' element={<Listing />} />
         <Route path='/search' element={<Search />} />

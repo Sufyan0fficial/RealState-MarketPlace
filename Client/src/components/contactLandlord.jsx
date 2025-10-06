@@ -4,7 +4,7 @@ import { message } from 'antd';
 import { alert } from '../utils/helper.utils';
 import { Link } from 'react-router-dom';
 
-function ContactLandlord({ listingData, setLoading }) {
+function ContactLandlord({ listingData }) {
     const [messageApi, contextHolder] = message.useMessage();
     const [landLordUser, setLandLordUser] = useState(null)
     const [queryMessage, setQueryMessage] = useState('')
@@ -12,16 +12,15 @@ function ContactLandlord({ listingData, setLoading }) {
 
     useEffect(() => {
         const fetchLandlordDetails = async () => {
-            setLoading(true)
             try {
                 const res = await fetchLandlordUser(listingData?.userRef)
                 if (res.status === 200) {
                     setLandLordUser(res.data.data)
-                    setLoading(false)
+
                 }
             } catch (error) {
                 alert(messageApi, 'error', (error.message || "Something went wrong"))
-                setLoading(false)
+
             }
         }
         fetchLandlordDetails()
@@ -37,14 +36,20 @@ function ContactLandlord({ listingData, setLoading }) {
                     <span className='font-semibold'>{listingData?.name}</span>
                 </div>
                 <textarea name="" id="" rows={4} placeholder='Type Message...' className='focus:outline-0 border border-gray-400 w-full rounded-md bg-white px-4 py-2' onChange={(e) => setQueryMessage(e.target.value)}></textarea>
-                <a
-                    href={`https://mail.google.com/mail/?view=cm&fs=1&to=${landLordUser?.email}&su=${encodeURIComponent(listingData?.name || '')}&body=${encodeURIComponent(queryMessage || '')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                <button
+                    onClick={() => {
+                        const mailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${landLordUser?.email}&su=${encodeURIComponent(listingData?.name || '')}&body=${encodeURIComponent(queryMessage || '')}`;
+                        window.open(
+                            mailUrl,
+                            'gmailComposeWindow',
+                            'width=800,height=600,top=100,left=100' 
+                        );
+                    }}
                     className="w-full flex justify-center items-center text-white mt-2 text-center rounded-md bg-slate-700 py-3 tracking-wide uppercase cursor-pointer"
                 >
                     Send Message
-                </a>
+                </button>
+
             </div>
         </div>
     )
